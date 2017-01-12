@@ -1,7 +1,7 @@
 # SecretChat
 SAFE Network Chat WebApp based on our SAFE-FS Demo App built with safe-js
 
-View it live at safe://chat.wom5
+View it live at <a href="safe://">safe://chat.wom5</a>
 
 Secret messenger for you and whoever you invite.
 
