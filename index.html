@@ -34,8 +34,9 @@
 
 
 					<div id="file" style="display:none;">
-						<p><input type="text" id="content" placeholder="  Enter A Message!..."/></p>
-						<p><a class="button fit scrolly" onClick="createorupdatefile()">Send Message</a></p>
+						<p><input type="text" id="content" placeholder="  Enter A Message!..." onkeydown = "if (event.keyCode == 13)
+                        document.getElementById('btnSearch').click()"  /></p>
+						<p><a id='btnSearch' class="button fit scrolly" onClick="createorupdatefile()">Send Message</a></p>
 						<p id="fileresponse" style="color:black;font-weight:700;"></p>
 						<!--div id="chathistory" style="background:black;overflow-y:scroll;height:75px;width:50%;"></div-->
 					</div>
@@ -73,6 +74,8 @@
 		<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script type="text/javascript">
 			var auth = null;
+
+			
 
 			function authorize() {
 				const app =
@@ -142,6 +145,9 @@
 					document.getElementById('fileresponse').innerHTML = "Error: No Message Exists";
 				});
 			}
+
+
+
 			function deletefile(){
 				if(!auth){
 					alert('Please Login First');
@@ -159,96 +165,10 @@
 				});
 			}
 
-			function createlongname(){
-				if(!auth){
-					alert('Please Login First');
-					return;
-				}
-				var prename = (document.getElementById('longname').value).trim();
-				if(prename==""){
-					alert('Please type an ID');
-					return;
-				}
-				var name = prename.toLowerCase();
-				safeDNS.createLongName(auth.token,name).then(function(response){
-					document.getElementById('idresponse').innerHTML = "<font color='#228604'>Successfully Created ID: </font>"+name;
-					document.getElementById('skip3').innerHTML ='<font color="black" style="font-weight:900; text-shadow: 2px 2px #FFFFFF;">NEXT -></font>';
-				},function(error){
-					document.getElementById('idresponse').innerHTML = "<font color='#228604'>Successfully Requested ID: </font>"+name;
-					document.getElementById('skip3').innerHTML ='<font color="black" style="font-weight:900; text-shadow: 2px 2px #FFFFFF;">NEXT -></font>';
-					//document.getElementById('idresponse').innerHTML = error
-				});
-			}
-			function createservice(){
-				if(!auth){
-					alert('Please Login First');
-					return;
-				}
-				var name = (document.getElementById('servicename').value).trim();
-				if(name==""){
-					alert('Please Enter a URL');
-					return;
-				}
-				var longname = (document.getElementById('longnametwo').value).trim();
-				var homedir = (document.getElementById('homedir').value).trim();
-				if(longname==""){
-					alert('Please type an ID to use (into the top box)');
-					return;
-				}
-				safeDNS.addService(auth.token,longname,name,homedir,false).then(function(response){
-					document.getElementById('serviceresponse').innerHTML = "<font color='#228604'>Your site should now be live at: </font><br>safe://"+name+"."+longname;
-					document.getElementById('skip4').innerHTML ='<font color="black" style="font-weight:900; text-shadow: 2px 2px #FFFFFF;">NEXT -></font>';
-				},function(error){
-					//console.log(error);
-					//document.getElementById('serviceerror').innerHTML = JSON.stringify(error)+" Error on creating service";
-					document.getElementById('serviceresponse').innerHTML = "<font color='#228604'>Your site should now be live at: </font><br>safe://"+name+"."+longname;
-					document.getElementById('skip4').innerHTML ='<font color="black" style="font-weight:900; text-shadow: 2px 2px #FFFFFF;">NEXT -></font>';
-				});
-			}
-			function listlongnames(){
-				if(!auth){
-					alert('Please Login First');
-					return;
-				}
-				safeDNS.listLongNames(auth.token).then(function(response){
-					document.getElementById('idresponse').innerHTML = "<font color='#228604'>These are your current IDs:<br></font>"+JSON.stringify(response);
-					document.getElementById('skip4').innerHTML ='<font color="black" style="font-weight:900; text-shadow: 2px 2px #FFFFFF;">NEXT -></font>';
-				},function(error){
-					document.getElementById('idresponse').innerHTML = "Error listing IDs";
-					document.getElementById('skip4').innerHTML ='<font color="black" style="font-weight:900; text-shadow: 2px 2px #FFFFFF;">NEXT -></font>';
-				});
-			}
-			function longnamesagain(){
-				if(!auth){
-					alert('Please Login First');
-					return;
-				}
-				safeDNS.listLongNames(auth.token).then(function(response){
-					document.getElementById('serviceresponse').innerHTML = "<font color='#228604'>These are your current IDs:<br></font>"+JSON.stringify(response);
-				},function(error){
-					document.getElementById('serviceresponse').innerHTML = "Error listing IDs";
-				});
-			}
-			function listservices(){
-				if(!auth){
-					alert('Please Login First');
-					return;
-				}
-				var longname = (document.getElementById('longnametwo').value).trim();
-				if(longname==""){
-					alert("Please type an ID to check (in the first box)");
-					return;
-				}
-				safeDNS.listServices(auth.token,longname).then(function(response){
-					document.getElementById('serviceresponse').innerHTML = "<font color='#228604'>These are your active URLs: </font><br>"+JSON.stringify(response);
-				},function(error){
 
-					document.getElementById('serviceresponse').innerHTML = JSON.stringify(error)+" Error: No Active URLS Found";
-				});
-			}
 	</script>
 		<script>
-			window.onload = function() { document.body.className = ''; document.getElementById("auth").style.display="block"; }
+			window.onload = function() { document.body.className = ''; document.getElementById("file").style.display="block"; }
 			window.ontouchmove = function() { return false; }
 			window.onorientationchange = function() { document.body.scrollTop = 0; }
 			function toFiles() {
